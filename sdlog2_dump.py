@@ -132,8 +132,7 @@ class SDLog2Parser:
                         self.__ptr += 1
                         continue
                     else:
-                        break
-                        #raise Exception("Invalid header at %i (0x%X): %02X %02X, must be %02X %02X" % (bytes_read + self.__ptr, bytes_read + self.__ptr, head1, head2, self.MSG_HEAD1, self.MSG_HEAD2))
+                        raise Exception("Invalid header at %i (0x%X): %02X %02X, must be %02X %02X" % (bytes_read + self.__ptr, bytes_read + self.__ptr, head1, head2, self.MSG_HEAD1, self.MSG_HEAD2))
                 msg_type = self.__buffer[self.__ptr+2]
                 if msg_type == self.MSG_TYPE_FORMAT:
                     # parse FORMAT message

@@ -4,10 +4,11 @@ import os
 import subprocess
 import re
 
+px4logext = '.bin'
 
 def run_sdlog_dump(file_path):
     print file_path
-    file_out = re.sub('.px4log', '.csv', file_path)
+    file_out = re.sub(px4logext, '.csv', file_path)
     cmd = 'python sdlog2_dump.py {file_path:s}'\
         ' -f {file_out:s}'.format(**locals())
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
@@ -17,7 +18,7 @@ def run_sdlog_dump(file_path):
 
 for root, dirs, files in os.walk(os.curdir):
         for file in files:
-            if file.endswith('.px4log'):
+            if file.endswith(px4logext):
                 try:
                     file_path = os.path.abspath(os.path.join(root, file))
                     run_sdlog_dump(file_path)
