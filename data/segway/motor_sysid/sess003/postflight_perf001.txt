@@ -1,0 +1,40 @@
+PERFORMANCE COUNTERS POST-FLIGHT
+
+navigator: 1886 events, 124694us elapsed, 66us avg, min 28us max 2229us
+attitude_estimator_ekf: 4512 events, 3724063us elapsed, 825us avg, min 608us max 1084us
+sensor task update: 4513 events, 653463us elapsed, 144us avg, min 96us max 384us
+lsm303d_accel_resched: 171 events
+lsm303d_extremes: 0 events
+lsm303d_reg7_resets: 0 events
+lsm303d_reg1_resets: 0 events
+lsm303d_mag_read: 1812 events, 68185us elapsed, 37us avg, min 37us max 38us
+lsm303d_accel_read: 14485 events, 584651us elapsed, 40us avg, min 40us max 41us
+l3gd20_errors: 0 events
+l3gd20_reschedules: 2661 events
+l3gd20_read: 13568 events, 597221us elapsed, 44us avg, min 43us max 45us
+mpu6000_good_transfers: 13792 events
+mpu6000_bad_transfers: 0 events
+mpu6000_read: 13795 events, 1026480us elapsed, 74us avg, min 72us max 79us
+mpu6000_gyro_read: 0 events
+mpu6000_accel_read: 0 events
+adc_samples: 18140 events, 54450us elapsed, 3us avg, min 2us max 4us
+ms5611_buffer_overflows: 1120 events
+ms5611_comms_errors: 0 events
+ms5611_measure: 1495 events, 35289us elapsed, 23us avg, min 14us max 1304us
+ms5611_read: 1495 events, 192865us elapsed, 129us avg, min 23us max 2409us
+mavlink_txe: 2 events
+mavlink_el: 1559 events, 563352us elapsed, 361us avg, min 74us max 102552us
+io rc #: 0 events
+io write: 0 events, 0us elapsed, 0us avg, min 0us max 0us
+io update: 795 events, 1582987us elapsed, 1991us avg, min 1352us max 3322us
+io_badidle  : 0 events
+io_idle     : 2561 events
+io_uarterrs : 0 events
+io_protoerrs: 0 events
+io_dmaerrs  : 0 events
+io_crcerrs  : 0 events
+io_timeouts : 0 events
+io_retries  : 0 events
+io_dmasetup : 2561 events, 42962us elapsed, 16us avg, min 9us max 1792us
+io_txns     : 2561 events, 1482058us elapsed, 578us avg, min 150us max 2346us
+DMA allocations: 1 events
