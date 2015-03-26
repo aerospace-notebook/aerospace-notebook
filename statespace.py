@@ -6,6 +6,7 @@ import sympy
 import pylab as pl
 import numpy
 import scipy.integrate
+import control
 
 # pylint: disable=no-member
 # pylint: disable=too-many-arguments
@@ -100,15 +101,30 @@ class StateSpace(object):
         data.pack()
         return data
 
-    def linearize(self):
+    def compute_jacobians(self):
         """
-        Linearize system.
+        Returns jacobian.
         """
         A = self.f.jacobian(self.x)
         B = self.f.jacobian(self.u)
         C = self.g.jacobian(self.x)
         D = self.g.jacobian(self.u)
-        return LinearStateSpace(self.x, self.u, A, B, C, D)
+        return A, B, C, D
+
+    def linearize(self, x0, u0):
+        """
+        Linearize system.
+        """
+        A, B, C, D = self.compute_jacobians()
+        x0_sub = {self.x[i]:x0[i] for i in range(len(self.x))}
+        u0_sub = {self.u[i]:u0[i] for i in range(len(self.u))}
+        y0 = self.g_eval(0, x0, u0)[:, 0]
+        A0 = pl.array(A.subs(x0_sub).subs(u0_sub)).astype(float)
+        B0 = pl.array(B.subs(x0_sub).subs(u0_sub)).astype(float)
+        C0 = pl.array(C.subs(x0_sub).subs(u0_sub)).astype(float)
+        D0 = pl.array(D.subs(x0_sub).subs(u0_sub)).astype(float)
+        return LinearStateSpace(self.x, self.u, x0, u0, y0,
+                A0, B0, C0, D0)
 
 
 class LinearStateSpace(StateSpace):
@@ -116,25 +132,21 @@ class LinearStateSpace(StateSpace):
     A linear state space.
     """
 
-    def __init__(self, x, u, x0, u0, A, B, C, D):
+    def __init__(self, x, u, x0, u0, y0, A, B, C, D):
+        x0 = pl.array(x0)
+        u0 = pl.array(u0)
         f = A*(x-x0) + B*(u-u0)
-        g = C*(x-x0)+ D*(u-u0)
+        g = y0 + C*(x-x0) + D*(u-u0)
         super(LinearStateSpace, self).__init__(x, u, f, g)
         self.A = A
         self.B = B
         self.C = C
         self.D = D
 
-    def eval(self, x0, u0):
+    def to_control(self):
         """
-        Evaluate at a point.
+        Convert to control state space.
         """
-        x0_sub = {self.x[i]:x0[i] for i in range(len(self.x))}
-        u0_sub = {self.u[i]:u0[i] for i in range(len(self.u))}
-        return [
-            pl.array(self.A.subs(x0_sub).subs(u0_sub)).astype(float),
-            pl.array(self.B.subs(x0_sub).subs(u0_sub)).astype(float),
-            pl.array(self.C.subs(x0_sub).subs(u0_sub)).astype(float),
-            pl.array(self.D.subs(x0_sub).subs(u0_sub)).astype(float)]
+        return control.ss(self.A, self.B, self.C, self.D)
 
 # vim: set et fenc=utf-8 ff=unix sts=0 sw=4 ts=4 ft=python :
