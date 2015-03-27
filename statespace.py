@@ -94,7 +94,7 @@ class StateSpace(object):
             x = sim.y
             y = self.g_eval(t, x, u)[:, 0]
             if contr_eval is not None:
-                u = contr_eval(y)
+                u = contr_eval(t, y)
             sim.set_f_params(u)
             sim.integrate(t + dt)
             data.update(t, x, u, y)
